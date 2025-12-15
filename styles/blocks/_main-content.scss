@@ -6,6 +6,8 @@
   width: var(--container-width);
   // noinspection CssInvalidPropertyValue
   margin: rem(88) auto;
+  // noinspection CssInvalidPropertyValue
+  gap: rem(32);
 }
 
 .products {
@@ -14,12 +16,16 @@
   &__title {
     // noinspection CssInvalidPropertyValue
     font-size: rem(40);
-    text-decoration: none;
-
+    font-weight: 700;
+    color: var(--color-rose-900);
+    // noinspection CssInvalidPropertyValue
+    margin-bottom: rem(32);
   }
 
   &__list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    // noinspection CssInvalidPropertyValue
+    gap: rem(32) rem(24);
   }
 }
