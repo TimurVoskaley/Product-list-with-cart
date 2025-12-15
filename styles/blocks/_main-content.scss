@@ -1,0 +1,25 @@
+@use '../helpers' as *;
+
+
+.container {
+  display: flex;
+  width: var(--container-width);
+  // noinspection CssInvalidPropertyValue
+  margin: rem(88) auto;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  &__title {
+    // noinspection CssInvalidPropertyValue
+    font-size: rem(40);
+    text-decoration: none;
+
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
