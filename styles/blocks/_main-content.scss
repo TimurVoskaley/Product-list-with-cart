@@ -13,6 +13,7 @@
 .products {
   display: flex;
   flex-direction: column;
+
   &__title {
     // noinspection CssInvalidPropertyValue
     font-size: rem(40);
@@ -27,5 +28,14 @@
     grid-template-columns: repeat(3, 1fr);
     // noinspection CssInvalidPropertyValue
     gap: rem(32) rem(24);
+  }
+
+  &__card {
+
+
+    &-image img{
+      // noinspection CssInvalidPropertyValue
+      border-radius: rem(8);
+    }
   }
 }
