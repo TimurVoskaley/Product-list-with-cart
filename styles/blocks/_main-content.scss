@@ -4,9 +4,7 @@
 .container {
   display: flex;
   width: var(--container-width);
-  // noinspection CssInvalidPropertyValue
   margin: rem(88) auto;
-  // noinspection CssInvalidPropertyValue
   gap: rem(32);
 }
 
@@ -15,27 +13,87 @@
   flex-direction: column;
 
   &__title {
-    // noinspection CssInvalidPropertyValue
     font-size: rem(40);
     font-weight: 700;
     color: var(--color-rose-900);
-    // noinspection CssInvalidPropertyValue
     margin-bottom: rem(32);
   }
 
   &__list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    // noinspection CssInvalidPropertyValue
     gap: rem(32) rem(24);
   }
 
   &__card {
 
+    &-image {
+      position: relative;
+      padding-bottom: rem(22);
+      margin-bottom: rem(16);
+    }
 
     &-image img{
-      // noinspection CssInvalidPropertyValue
       border-radius: rem(8);
     }
+
+    &-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: rem(14);
+      font-weight: 600;
+      text-wrap: nowrap;
+      color: var(--color-rose-900);
+      background-color: white;
+      padding: rem(12) rem(28);
+      border: 1px solid var(--color-rose-400);
+      border-radius: rem(999);
+      gap: rem(8);
+
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+
+      &::before {
+        content: '';
+        display: block;
+        width: rem(20);
+        height: rem(20);
+        background-image: url("/assets/icons/icon-add-to-cart.svg");
+        background-repeat: no-repeat;
+      }
+
+      &:hover {
+        color: var(--color-red);
+        border-color: var(--color-red);
+      }
+    }
+
+    &-category {
+      font-size: rem(14);
+      font-weight: 400;
+      color: var(--color-rose-500);
+    }
+
+    &-title {
+      font-size: rem(16);
+      font-weight: 600;
+      color: var(--color-rose-900);
+    }
+
+    &-price {
+      font-size: rem(16);
+      font-weight: 600;
+      color: var(--color-red);
+    }
+
   }
+
+}
+
+.attribution {
+  display: flex;
+  justify-content: center;
 }
