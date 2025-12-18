@@ -4,14 +4,17 @@
 .container {
   display: flex;
   align-items: flex-start;
-  width: var(--container-width);
+  max-width: rem(1216);
+  width: 100%;
   margin: rem(88) auto;
   gap: rem(32);
+
 }
 
 .products {
   display: flex;
   flex-direction: column;
+
 
   &__title {
     font-size: rem(40);
@@ -35,6 +38,8 @@
     }
 
     &-image img{
+      width: rem(250);
+      height: auto;
       border-radius: rem(8);
     }
 

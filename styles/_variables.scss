@@ -13,14 +13,4 @@
   --tablet: 768px;
   --desktop: 1440px;
 
-  --container-width: #{rem(1216)};
-
-  @media (max-width: var(--tablet)) {
-    --container-width: #{rem(688)};
-  }
-
-  @media (max-width: var(--mobile)) {
-    --container-width: #{rem(688)};
-  }
-
 }
