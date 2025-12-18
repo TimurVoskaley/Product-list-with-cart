@@ -3,4 +3,5 @@
 @use 'variables';
 @use "globals";
 
-@use 'blocks/main-content.scss';
+@use 'blocks/main-content';
+@use "blocks/cart";

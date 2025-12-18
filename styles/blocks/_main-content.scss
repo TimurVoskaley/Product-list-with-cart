@@ -3,6 +3,7 @@
 
 .container {
   display: flex;
+  align-items: flex-start;
   width: var(--container-width);
   margin: rem(88) auto;
   gap: rem(32);
@@ -132,4 +133,5 @@
 .attribution {
   display: flex;
   justify-content: center;
+  padding-bottom: rem(25);
 }
