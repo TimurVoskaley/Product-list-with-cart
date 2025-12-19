@@ -1,0 +1,142 @@
+@use '../helpers' as *;
+
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  max-width: rem(1216);
+  width: 100%;
+  margin: rem(88) auto;
+  gap: rem(32);
+
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+
+
+  &__title {
+    font-size: rem(40);
+    font-weight: 700;
+    color: var(--color-rose-900);
+    margin-bottom: rem(32);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem(32) rem(24);
+  }
+
+  &__card {
+
+    &-image {
+      position: relative;
+      padding-bottom: rem(22);
+      margin-bottom: rem(16);
+    }
+
+    &-image img{
+      width: rem(250);
+      height: auto;
+      border-radius: rem(8);
+    }
+
+    &-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: rem(14);
+      font-weight: 600;
+      text-wrap: nowrap;
+      border-radius: rem(999);
+
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+    }
+
+    &-category {
+      font-size: rem(14);
+      font-weight: 400;
+      color: var(--color-rose-500);
+    }
+
+    &-title {
+      font-size: rem(16);
+      font-weight: 600;
+      color: var(--color-rose-900);
+    }
+
+    &-price {
+      font-size: rem(16);
+      font-weight: 600;
+      color: var(--color-red);
+    }
+
+  }
+
+}
+
+.add-product-button {
+  color: var(--color-rose-900);
+  background-color: white;
+  padding: rem(12) rem(28);
+  border: 1px solid var(--color-rose-400);
+  gap: rem(8);
+
+  &::before {
+    content: '';
+    display: block;
+    width: rem(20);
+    height: rem(20);
+    background-image: url("/assets/icons/icon-add-to-cart.svg");
+    background-repeat: no-repeat;
+  }
+
+  &:hover {
+    color: var(--color-red);
+    border-color: var(--color-red);
+  }
+}
+
+.count-products-button {
+  display: none;
+  gap: rem(45.5);
+  background-color: var(--color-red);
+  padding: rem(12);
+  border: 1px solid var(--color-red);
+
+  & span {
+    color: white;
+    font-weight: 600;
+  }
+}
+
+.count-products-button.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  width: rem(20);
+  height: rem(20);
+  padding: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  color: white;
+
+  &:active {
+    background-color: white;
+    color: var(--color-red);
+  }
+}
+
+
+
+.attribution {
+  display: flex;
+  justify-content: center;
+  padding-bottom: rem(25);
+}
