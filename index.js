@@ -106,8 +106,21 @@ function handleAddToCart(product, event) {
 
 
 function handleQuantityChange(product, change) {
-  console.log('Изменено количество:', product.name, change);
+
   // Здесь логика изменения количества
+  if (change === 1) {
+    cart.push(product);
+  } else {
+    for (let [index, item] of cart.entries()) {
+      if (item.name === product.name) {
+        cart.splice(index, 1);
+        break;
+      }
+    }
+
+
+  }
+renderCart();
 }
 
 
