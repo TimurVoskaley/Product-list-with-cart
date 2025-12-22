@@ -2,6 +2,10 @@
 
 let productsList = document.querySelector('.products__list');
 let products = [];
+let cart = [];
+let emptyMessage = document.createElement('div');
+let cartList = document.querySelector('.cart__list');
+
 
 async function getProducts() {
   try {
@@ -31,7 +35,7 @@ function renderProduct(product) {
         <img src="${product.image.desktop}" alt="${product.name}" width="251" height="240">
       </picture>
       <button class="products__card-button add-product-button" type="button">Add to Cart</button>
-      <div class="products__card-button count-products-button hidden">
+      <div class="products__card-button count-products-button visually-hidden">
         <button class="count-products-button btn minus-product-button" type="button">-</button>
         <span class="product-quantity">1</span>
         <button class="count-products-button btn plus-product-button" type="button">+</button>
@@ -51,18 +55,52 @@ function renderProduct(product) {
   const plusButton = card.querySelector('.plus-product-button');
   const minusButton = card.querySelector('.minus-product-button');
 
-  addButton.addEventListener('click', () => handleAddToCart(product));
+  addButton.addEventListener('click', (event) => handleAddToCart(product, event));
   plusButton.addEventListener('click', () => handleQuantityChange(product, 1));
   minusButton.addEventListener('click', () => handleQuantityChange(product, -1));
 
   return card;
 }
 
+function renderCart() {
+  let cartElement = document.querySelector('.cart');
+  let cartTitle = document.querySelector('.cart__title');
+  cartTitle.textContent = `Your Cart (${cart.length})`;
 
 
-function handleAddToCart(product) {
-  console.log('Добавлено в корзину:', product.name);
-  // Здесь логика добавления в корзину
+
+  if (cart.length === 0) {
+    emptyMessage.classList.remove('visually-hidden');
+    emptyMessage.className = 'cart__empty-message';
+    emptyMessage.innerHTML = `<img class="cart__empty-image" src="./assets/images/illustration-empty-cart.svg" alt="" aria-hidden="true">
+                              <p>Your added items will appear here</p>`;
+    cartElement.append(emptyMessage);
+
+  } else {
+    emptyMessage.classList.add('visually-hidden');
+  }
+}
+
+
+
+function handleAddToCart(product, event) {
+  cart.push(product);
+
+  //создание в корзине элемента списка выбранного товара
+  let orderProduct = document.createElement('li');
+  orderProduct.className = 'cart__order-product';
+  orderProduct.innerHTML = `${product.name}`;
+  cartList.append(orderProduct);
+
+  // скрытие кнопки добавления товара в карточке
+  event.target.classList.toggle('visually-hidden');
+
+  // появление кнопки увеличения единиц выбранного товара в карточке
+  let parent = event.target.parentElement;
+  let countButton = parent.querySelector('.count-products-button');
+  countButton.classList.toggle('visually-hidden');
+
+  renderCart()
 }
 
 
@@ -77,12 +115,13 @@ function handleQuantityChange(product, change) {
 async function init() {
   try {
     products = await getProducts();
+    renderCart()
 
     // Очищаем контейнер
     productsList.innerHTML = '';
 
     // Рендерим каждый продукт
-    products.forEach(product => {
+    products.forEach((product) => {
       const card = renderProduct(product);
       productsList.append(card);
     });
