@@ -56,8 +56,8 @@ function renderProduct(product) {
   const minusButton = card.querySelector('.minus-product-button');
 
   addButton.addEventListener('click', (event) => handleAddToCart(product, event));
-  plusButton.addEventListener('click', () => handleQuantityChange(product, 1));
-  minusButton.addEventListener('click', () => handleQuantityChange(product, -1));
+  plusButton.addEventListener('click', (event) => handleQuantityChange(product, 1, event));
+  minusButton.addEventListener('click', (event) => handleQuantityChange(product, -1, event));
 
   return card;
 }
@@ -82,13 +82,12 @@ function renderCart() {
 }
 
 
-
 function handleAddToCart(product, event) {
   cart.push(product);
 
   //создание в корзине элемента списка выбранного товара
   let orderProduct = document.createElement('li');
-  orderProduct.className = 'cart__order-product';
+  orderProduct.className = 'cart__item';
   orderProduct.innerHTML = `${product.name}`;
   cartList.append(orderProduct);
 
@@ -103,9 +102,7 @@ function handleAddToCart(product, event) {
   renderCart()
 }
 
-
-
-function handleQuantityChange(product, change) {
+function handleQuantityChange(product, change, event) {
 
   // Здесь логика изменения количества
   if (change === 1) {
@@ -114,16 +111,39 @@ function handleQuantityChange(product, change) {
     for (let [index, item] of cart.entries()) {
       if (item.name === product.name) {
         cart.splice(index, 1);
+        toggleCountButtonClass(product, event)
         break;
       }
     }
-
 
   }
 renderCart();
 }
 
+//скрывает кнопку кол-ва и показывает кнопку добавить в корзину, если товара в корзине больше нет
+function toggleCountButtonClass(product, event) {
+  let index = cart.indexOf(product);
+  if (index === -1) {
 
+    //удаляет элемент списка выбранных товаров из интерфейса корзины
+    let cartList = document.querySelector('.cart__list');
+    const items = cartList.querySelectorAll('li');
+    items.forEach(item => {
+      if (item.textContent.trim().includes(product.name)) {
+        item.remove();
+      }
+    });
+
+    //скрывает кнопку + / - кол-во единиц товара
+    let parent = event.target.parentElement;
+    parent.classList.toggle('visually-hidden');
+
+    //показывает кнопку добавить товар в корзину
+    let card = parent.parentElement;
+    let addButton = card.querySelector('.add-product-button');
+    addButton.classList.toggle('visually-hidden');
+  }
+}
 
 async function init() {
   try {
@@ -139,7 +159,6 @@ async function init() {
       productsList.append(card);
     });
 
-    console.log('Продукты загружены:', products);
   } catch (error) {
     console.error('Ошибка:', error);
   }
