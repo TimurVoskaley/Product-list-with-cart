@@ -21,11 +21,10 @@ async function getProducts() {
 }
 
 
-function renderProduct(product) {
+function renderProducts(product) {
   const card = document.createElement('article');
   card.className = 'products__card';
   card.dataset.id = product.name;
-
   card.innerHTML = `
     <div class="products__card-image">
       <picture>
@@ -49,9 +48,8 @@ function renderProduct(product) {
   `;
 
 
-
-  // Вешаем обработчики сразу
   const addButton = card.querySelector('.add-product-button');
+  addButton.dataset.productName = product.name;
   const plusButton = card.querySelector('.plus-product-button');
   const minusButton = card.querySelector('.minus-product-button');
 
@@ -65,12 +63,18 @@ function renderProduct(product) {
 function renderCart() {
   let cartElement = document.querySelector('.cart');
   let cartTitle = document.querySelector('.cart__title');
-  cartTitle.textContent = `Your Cart (${cart.length})`;
+  const cartContent = cartElement.querySelector('.cart__content-wrapper');
+  let cartCountProducts = 0;
+  cartTitle.textContent = `Your Cart (${cartCountProducts})`;
+  let totalPriceElement = document.querySelector('.total-prace__price');
+  let sum = cart.reduce((acc, el) => acc + (el.count * el.price), 0);
+  totalPriceElement.textContent = `$${sum.toFixed(2)}`;
 
 
 
   if (cart.length === 0) {
     emptyMessage.classList.remove('visually-hidden');
+    cartContent.classList.add('visually-hidden');
     emptyMessage.className = 'cart__empty-message';
     emptyMessage.innerHTML = `<img class="cart__empty-image" src="./assets/images/illustration-empty-cart.svg" alt="" aria-hidden="true">
                               <p>Your added items will appear here</p>`;
@@ -78,71 +82,96 @@ function renderCart() {
 
   } else {
     emptyMessage.classList.add('visually-hidden');
+    cartContent.classList.remove('visually-hidden');
+    cartList.innerHTML = '';
+
+    //создание в корзине элемента списка выбранного товара
+    cart.map(product => {
+      cartCountProducts += product.count;
+      cartTitle.textContent = `Your Cart (${cartCountProducts})`;
+
+      let orderProduct = document.createElement('li');
+      orderProduct.className = 'cart__item';
+      orderProduct.innerHTML = `     
+            <div class="cart__item-info-wrapper">
+              <p class="cart__item-title">${product.name}</p>
+              <div class="cart__item-count-and-price-wrap">
+                <p class="cart__item-count">${product.count}x</p>
+                <p class="cart__item-price">@ $${product.price.toFixed(2)}</p>
+                <p class="cart__item-total-price">$${(product.price.toFixed(2) * product.count).toFixed(2)}</p>
+              </div>
+            </div>
+            <button
+              class="cart__item-delete-button"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>
+            </button>`;
+
+      const deleteBtn = orderProduct.querySelector('.cart__item-delete-button');
+      deleteBtn.addEventListener('click', (event) => deleteProductFromCart(product, event));
+
+      cartList.append(orderProduct);
+
+    }).join('');
+
   }
 }
 
 
 function handleAddToCart(product, event) {
+  product.count = 1
   cart.push(product);
 
-  //создание в корзине элемента списка выбранного товара
-  let orderProduct = document.createElement('li');
-  orderProduct.className = 'cart__item';
-  orderProduct.innerHTML = `${product.name}`;
-  cartList.append(orderProduct);
-
   // скрытие кнопки добавления товара в карточке
-  event.target.classList.toggle('visually-hidden');
-
-  // появление кнопки увеличения единиц выбранного товара в карточке
-  let parent = event.target.parentElement;
-  let countButton = parent.querySelector('.count-products-button');
-  countButton.classList.toggle('visually-hidden');
-
+  updateProductCardUI(product, true);
   renderCart()
 }
 
 function handleQuantityChange(product, change, event) {
 
   // Здесь логика изменения количества
-  if (change === 1) {
-    cart.push(product);
-  } else {
     for (let [index, item] of cart.entries()) {
       if (item.name === product.name) {
-        cart.splice(index, 1);
-        toggleCountButtonClass(product, event)
-        break;
+        if (change === 1) {
+          item.count += 1;
+        } else {
+          item.count -= 1;
+          if (item.count < 1) {
+            cart.splice(index, 1);
+            updateProductCardUI(product, false);
+            break;
+          }
       }
     }
-
   }
 renderCart();
 }
 
-//скрывает кнопку кол-ва и показывает кнопку добавить в корзину, если товара в корзине больше нет
-function toggleCountButtonClass(product, event) {
-  let index = cart.indexOf(product);
-  if (index === -1) {
+function deleteProductFromCart(product, event) {
+  cart = cart.filter(item => item.name !== product.name);
+  updateProductCardUI(product, false);
+  renderCart();
 
-    //удаляет элемент списка выбранных товаров из интерфейса корзины
-    let cartList = document.querySelector('.cart__list');
-    const items = cartList.querySelectorAll('li');
-    items.forEach(item => {
-      if (item.textContent.trim().includes(product.name)) {
-        item.remove();
+}
+
+function updateProductCardUI(product, isInCart) {
+  // Находим все карточки с этим товаром (может быть несколько)
+  document.querySelectorAll('.products__card').forEach(card => {
+    const addButton = card.querySelector('.add-product-button');
+    const countButton = card.querySelector('.count-products-button');
+
+    // Проверяем, совпадает ли имя товара через data-атрибут
+    if (addButton?.dataset.productName === product.name) {
+      if (isInCart) {
+        addButton.classList.add('visually-hidden');
+        countButton.classList.remove('visually-hidden');
+      } else {
+        addButton.classList.remove('visually-hidden');
+        countButton.classList.add('visually-hidden');
       }
-    });
-
-    //скрывает кнопку + / - кол-во единиц товара
-    let parent = event.target.parentElement;
-    parent.classList.toggle('visually-hidden');
-
-    //показывает кнопку добавить товар в корзину
-    let card = parent.parentElement;
-    let addButton = card.querySelector('.add-product-button');
-    addButton.classList.toggle('visually-hidden');
-  }
+    }
+  });
 }
 
 async function init() {
@@ -155,7 +184,7 @@ async function init() {
 
     // Рендерим каждый продукт
     products.forEach((product) => {
-      const card = renderProduct(product);
+      const card = renderProducts(product);
       productsList.append(card);
     });
 
