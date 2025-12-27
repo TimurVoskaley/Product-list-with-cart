@@ -1,0 +1,132 @@
+@use '../helpers' as *;
+
+.popup {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+
+
+  &__wrapper {
+    @include abs-center;
+    display: flex;
+    flex-direction: column;
+    max-width: rem(592);
+    width: 100%;
+    padding: rem(40);
+    background-color: white;
+    border-radius: rem(12);
+    gap: rem(32);
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__title {
+    font-size: rem(40);
+    line-height: 120%;
+    font-weight: 700;
+    color: var(--color-rose-900);
+    margin-bottom: rem(8);
+
+    &:before {
+      content: '';
+      display: block;
+      width: rem(48);
+      height: rem(48);
+      background-image: url("/assets/icons/icon-order-confirmed.svg");
+      background-repeat: no-repeat;
+      margin-bottom: rem(24);
+    }
+  }
+
+  &__subtitle {
+    font-size: rem(16);
+    font-weight: 400;
+    color: var(--color-rose-500)
+  }
+
+  &-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: rem(8);
+
+
+  }
+
+  &__order-info {
+    background-color: var(--color-rose-50);
+    border-radius: rem(8);
+    padding: rem(24)
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: rem(16);
+    border-bottom: 1px solid var(--color-rose-100);
+
+    &:not(:first-child) {
+      padding-top: rem(16);
+    }
+
+    &-image {
+      width: rem(48);
+      height: rem(48);
+      margin-right: rem(16);
+    }
+
+    &-info-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: rem(8);
+      flex-grow: 1;
+    }
+
+    &-title {
+      font-size: rem(14);
+      font-weight: 600;
+      color: var(--color-rose-900);
+    }
+
+    &-count-and-price-wrap {
+      display: flex;
+      gap: rem(8);
+    }
+
+    &-count {
+      width: rem(21);
+      text-align: left;
+      font-size: rem(14);
+      font-weight: 600;
+      color: var(--color-red);
+    }
+
+    &-price {
+      font-size: rem(14);
+      font-weight: 400;
+      color: var(--color-rose-500);
+    }
+
+    &-total-price {
+      font-size: rem(16);
+      font-weight: 600;
+      color: var(--color-rose-900);
+    }
+
+  }
+
+  &__total-prace {
+    margin-top: rem(24);
+  }
+}
+

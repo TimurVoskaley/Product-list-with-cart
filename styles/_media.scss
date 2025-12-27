@@ -10,6 +10,11 @@
   .cart {
     width: 100%;
   }
+
+//  .popup__wrapper {
+//    min-width: rem(592);
+//    width: 100%;
+//  }
 }
 
 @media (max-width: 850px) {
@@ -22,6 +27,11 @@
     width: rem(213);
     height: auto;
   }
+
+//  .popup__wrapper {
+//    width: 100%;
+//    margin-inline: rem(40);
+//  }
 }
 
 @media (max-width: 720px) {
@@ -53,6 +63,11 @@
     align-items: center;
     gap: rem(15)
   }
+
+//  .popup__wrapper {
+//    width: 100%;
+//
+//  }
 }
 
 @media (max-width: 335px) {

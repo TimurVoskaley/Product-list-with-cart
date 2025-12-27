@@ -193,5 +193,12 @@ async function init() {
   }
 }
 
+// function openPopup() {
+//   const popup = document.querySelector('.popup');
+//   popup.classList.remove('visually-hidden');
+//
+//   document.body.classList.add('no-scroll');
+// }
+
 // Инициализируем
 document.addEventListener('DOMContentLoaded', init);
