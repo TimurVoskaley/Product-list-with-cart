@@ -34,4 +34,139 @@
     width: rem(128);
     height: rem(128);
   }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: rem(16);
+    border-bottom: 1px solid var(--color-rose-100);
+
+    &:not(:first-child) {
+      padding-top: rem(16);
+    }
+
+    &-info-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: rem(8);
+    }
+
+    &-title {
+      font-size: rem(14);
+      font-weight: 600;
+      color: var(--color-rose-900);
+    }
+
+    &-count-and-price-wrap {
+      display: flex;
+      gap: rem(8);
+    }
+
+    &-count {
+      width: rem(21);
+      text-align: left;
+      font-size: rem(14);
+      font-weight: 600;
+      color: var(--color-red);
+    }
+
+    &-price {
+      font-size: rem(14);
+      font-weight: 400;
+      color: var(--color-rose-500);
+    }
+
+    &-total-price {
+      font-size: rem(14);
+      font-weight: 600;
+      color: var(--color-rose-500);
+    }
+
+    &-delete-button {
+      width: rem(17.5);
+      height: rem(17.5);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-rose-400);
+      background-color: transparent;
+      border-radius: 50%;
+      border: 1px solid var(--color-rose-400);
+
+      &:hover {
+        border-color: var(--color-rose-900);
+        color: var(--color-rose-900);
+      }
+    }
+  }
+
+  &__total-prace {
+    margin-block: rem(24);
+  }
+
+  &__banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: rem(16);
+    background-color: var(--color-rose-50);
+    border-radius: rem(8);
+    gap: rem(8);
+    margin-bottom: rem(24);
+
+    &:before {
+      content: '';
+      display: block;
+      width: rem(20);
+      height: rem(20);
+      background-image: url("/assets/icons/icon-carbon-neutral.svg");
+      background-repeat: no-repeat;
+    }
+
+    &-title {
+      font-size: rem(14);
+      font-weight: 400;
+      color: var(--color-rose-900);
+    }
+
+    &-title > span {
+      font-weight: 700;
+    }
+  }
+}
+
+.total-prace {
+  display: flex;
+  justify-content: space-between;
+
+  &__title {
+    font-size: rem(14);
+    font-weight: 400;
+    color: var(--color-rose-900);
+  }
+
+  &__price {
+    font-size: rem(24);
+    font-weight: 700;
+    color: var(--color-rose-900);
+  }
+}
+
+.order-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: var(--color-red);
+  color: white;
+  border-radius: rem(999);
+  padding-block: rem(16);
+
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--color-red) 75%, #000 25%);
+  }
 }

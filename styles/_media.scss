@@ -10,18 +10,31 @@
   .cart {
     width: 100%;
   }
+
+
 }
 
 @media (max-width: 850px) {
   .container {
     width: rem(687);
-    margin: rem(40) auto;
+    margin-inline: rem(40);
   }
 
   .products__card-image img {
     width: rem(213);
     height: auto;
   }
+
+  .popup__wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: calc(100% - 2 * #{rem(40)});
+
+    margin: 0; // Убираем все margin
+  }
+
 }
 
 @media (max-width: 720px) {
@@ -30,6 +43,10 @@
   }
   .products__list {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .popup__wrapper {
+    width: rem(450);
   }
 }
 
@@ -53,10 +70,39 @@
     align-items: center;
     gap: rem(15)
   }
+
+  .popup__wrapper {
+    width: 100%;
+    max-width: 100vw;
+    padding: rem(40) rem(24);
+    top: auto; // убираем центрирование по вертикали
+    bottom: 0; // прижимаем к низу
+    left: 0; // растягиваем на всю ширину
+    translate: none; // убираем трансформацию
+    transform: none; // убираем возможные другие трансформации
+    border-radius: rem(12) rem(12) 0 0;
+    margin: 0;
+    height: auto; // высота по содержимому
+    max-height: 90vh; // ограничиваем максимальную высоту
+  }
+
+  .popup__order-info {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
+  }
 }
 
 @media (max-width: 335px) {
   .container {
     width: rem(310);
+  }
+
+  .popup__wrapper {
+    padding: rem(40) rem(16);
+  }
+
+  .popup__order-info {
+    padding: rem(24) rem(16);
   }
 }
