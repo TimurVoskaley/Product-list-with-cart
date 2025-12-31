@@ -1,4 +1,8 @@
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   font-family: 'Red Hat Text', sans-serif;
   background-color: var(--color-rose-50);
 }
