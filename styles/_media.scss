@@ -84,7 +84,12 @@
     margin: 0;
     height: auto; // высота по содержимому
     max-height: 90vh; // ограничиваем максимальную высоту
-    overflow-y: auto; // добавляем скролл если контент не помещается
+  }
+
+  .popup__order-info {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
   }
 }
 

@@ -1,10 +1,13 @@
 'use strict';
 
-let productsList = document.querySelector('.products__list');
+const productsList = document.querySelector('.products__list');
 let products = [];
 let cart = [];
-let emptyMessage = document.createElement('div');
-let cartList = document.querySelector('.cart__list');
+const emptyMessage = document.createElement('div');
+const cartList = document.querySelector('.cart__list');
+const orderCartBtn = document.querySelector('.cart__confirm-button');
+const popup = document.querySelector('.popup');
+const popupBtn = popup.querySelector('.popup__new-order-button');
 
 
 async function getProducts() {
@@ -19,7 +22,6 @@ async function getProducts() {
     return [];
   }
 }
-
 
 function renderProducts(product) {
   const card = document.createElement('article');
@@ -53,9 +55,9 @@ function renderProducts(product) {
   const plusButton = card.querySelector('.plus-product-button');
   const minusButton = card.querySelector('.minus-product-button');
 
-  addButton.addEventListener('click', (event) => handleAddToCart(product, event));
-  plusButton.addEventListener('click', (event) => handleQuantityChange(product, 1, event));
-  minusButton.addEventListener('click', (event) => handleQuantityChange(product, -1, event));
+  addButton.addEventListener('click', () => handleAddToCart(product));
+  plusButton.addEventListener('click', () => handleQuantityChange(product, 1));
+  minusButton.addEventListener('click', () => handleQuantityChange(product, -1));
 
   return card;
 }
@@ -118,8 +120,7 @@ function renderCart() {
   }
 }
 
-
-function handleAddToCart(product, event) {
+function handleAddToCart(product) {
   product.count = 1
   cart.push(product);
 
@@ -128,7 +129,7 @@ function handleAddToCart(product, event) {
   renderCart()
 }
 
-function handleQuantityChange(product, change, event) {
+function handleQuantityChange(product, change) {
 
   // Здесь логика изменения количества
     for (let [index, item] of cart.entries()) {
@@ -148,7 +149,7 @@ function handleQuantityChange(product, change, event) {
 renderCart();
 }
 
-function deleteProductFromCart(product, event) {
+function deleteProductFromCart(product) {
   cart = cart.filter(item => item.name !== product.name);
   updateProductCardUI(product, false);
   renderCart();
@@ -174,6 +175,69 @@ function updateProductCardUI(product, isInCart) {
   });
 }
 
+function renderPopupOrderList() {
+  const popupOrderList = popup.querySelector('.popup__order-list');
+  popupOrderList.innerHTML = '';
+  let totalPriceElement = popup.querySelector('.total-prace__price');
+  let sum = cart.reduce((acc, el) => acc + (el.count * el.price), 0);
+  totalPriceElement.textContent = `$${sum.toFixed(2)}`;
+
+  cart.map(product => {
+    let orderProduct = document.createElement('li');
+    orderProduct.className = 'popup__item';
+    orderProduct.innerHTML = `
+              <img
+                class="popup__item-image"
+                src=${product.image.thumbnail}
+                alt="order product image"
+                width="48"
+                height="48"
+              >
+              <div class="popup__item-info-wrapper">
+                <p class="popup__item-title">${product.name}</p>
+                <div class="popup__item-count-and-price-wrap">
+                  <p class="popup__item-count">${product.count}x</p>
+                  <p class="popup__item-price">@ $${product.price.toFixed(2)}</p>
+                </div>
+              </div>
+              <span class="popup__item-total-price">$${(product.price.toFixed(2) * product.count).toFixed(2)}</span>`
+
+    popupOrderList.append(orderProduct);
+  }).join('');
+
+
+
+}
+
+function showAndHidePopup() {
+  popup.classList.toggle('visually-hidden');
+  document.body.classList.toggle('no-scroll');
+  if (!popup.classList.contains('visually-hidden')) {
+    renderPopupOrderList()
+  }
+}
+
+popup.addEventListener('click', (event) => {
+  if (event.target.classList.contains('popup')) {
+    showAndHidePopup();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !popup.classList.contains('visually-hidden')) {
+    showAndHidePopup();
+  }
+});
+
+orderCartBtn.addEventListener('click', showAndHidePopup);
+
+popupBtn.addEventListener('click', () => {
+  const cartJson = JSON.stringify(cart); // для отправки на сервер
+  showAndHidePopup();
+  cart.forEach(item => deleteProductFromCart(item));
+
+})
+
 async function init() {
   try {
     products = await getProducts();
@@ -192,13 +256,5 @@ async function init() {
     console.error('Ошибка:', error);
   }
 }
-
-// function openPopup() {
-//   const popup = document.querySelector('.popup');
-//   popup.classList.remove('visually-hidden');
-//
-//   document.body.classList.add('no-scroll');
-// }
-
 // Инициализируем
 document.addEventListener('DOMContentLoaded', init);
