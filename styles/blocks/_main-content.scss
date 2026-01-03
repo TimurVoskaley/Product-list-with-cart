@@ -33,14 +33,12 @@
 
     &-image {
       position: relative;
-      padding-bottom: rem(22);
-      margin-bottom: rem(16);
-    }
 
-    &-image img{
-      width: rem(250);
-      height: auto;
-      border-radius: rem(8);
+      img {
+        width: rem(250);
+        height: auto;
+        border-radius: rem(8);
+      }
     }
 
     &-button {
