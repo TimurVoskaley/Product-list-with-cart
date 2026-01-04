@@ -1,0 +1,725 @@
+@charset "UTF-8";
+/**
+  Нормализация блочной модели
+ */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+/**
+  Убираем внутренние отступы слева тегам списков,
+  у которых есть атрибут class
+ */
+:where(ul, ol):where([class]) {
+  padding-left: 0;
+}
+
+/**
+  Убираем внешние отступы body и двум другим тегам,
+  у которых есть атрибут class
+ */
+body,
+:where(blockquote, figure, fieldset):where([class]) {
+  margin: 0;
+}
+
+/**
+  Убираем внешние отступы вертикали нужным тегам,
+  у которых есть атрибут class
+ */
+:where(h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl):where([class]) {
+  margin-block: 0;
+}
+
+:where(dd[class]) {
+  margin-left: 0;
+}
+
+:where(fieldset[class]) {
+  padding: 0;
+  border: none;
+}
+
+/**
+  Убираем стандартный маркер маркированному списку,
+  у которого есть атрибут class
+ */
+:where(ul[class]) {
+  list-style: none;
+}
+
+:where(address[class]) {
+  font-style: normal;
+}
+
+/**
+  Обнуляем вертикальные внешние отступы параграфа,
+  объявляем локальную переменную для внешнего отступа вниз,
+  чтобы избежать взаимодействие с более сложным селектором
+ */
+p {
+  --paragraphMarginBottom: 24px;
+  margin-block: 0;
+}
+
+/**
+  Внешний отступ вниз для параграфа без атрибута class,
+  который расположен не последним среди своих соседних элементов
+ */
+:where(p:not([class]):not(:last-child)) {
+  margin-bottom: var(--paragraphMarginBottom);
+}
+
+/**
+  Упрощаем работу с изображениями и видео
+ */
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/**
+  Наследуем свойства шрифт для полей ввода
+ */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+html {
+  /**
+    Пригодится в большинстве ситуаций
+    (когда, например, нужно будет "прижать" футер к низу сайта)
+   */
+  height: 100%;
+  /**
+    Убираем скачок интерфейса по горизонтали
+    при появлении / исчезновении скроллбара
+   */
+  scrollbar-gutter: stable;
+}
+
+/**
+  Плавный скролл
+ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /**
+    Пригодится в большинстве ситуаций
+    (когда, например, нужно будет "прижать" футер к низу сайта)
+   */
+  min-height: 100%;
+  /**
+    Унифицированный интерлиньяж
+   */
+  line-height: 1.5;
+}
+
+/**
+  Нормализация высоты элемента ссылки при его инспектировании в DevTools
+ */
+a:where([class]) {
+  display: inline-flex;
+}
+
+/**
+  Курсор-рука при наведении на элемент
+ */
+button,
+label {
+  cursor: pointer;
+}
+
+/**
+  Приводим к единому цвету svg-элементы
+  (за исключением тех, у которых уже указан
+  атрибут fill со значением 'none' или начинается с 'url')
+ */
+:where([fill]:not([fill=none],
+[fill^=url])) {
+  fill: currentColor;
+}
+
+/**
+  Приводим к единому цвету svg-элементы
+  (за исключением тех, у которых уже указан
+  атрибут stroke со значением 'none')
+ */
+:where([stroke]:not([stroke=none],
+[stroke^=url])) {
+  stroke: currentColor;
+}
+
+/**
+  Чиним баг задержки смены цвета при взаимодействии с svg-элементами
+ */
+svg * {
+  transition-property: fill, stroke;
+}
+
+/**
+  Приведение рамок таблиц в классический 'collapse' вид
+ */
+:where(table) {
+  border-collapse: collapse;
+  border-color: currentColor;
+}
+
+/**
+  Удаляем все анимации и переходы для людей,
+  которые предпочитают их не использовать
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@font-face {
+  font-display: swap;
+  font-family: "Red Hat Text";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../assets/fonts/red-hat-text-400.woff2") format("woff2");
+}
+@font-face {
+  font-display: swap;
+  font-family: "Red Hat Text";
+  font-style: normal;
+  font-weight: 600;
+  src: url("../assets/fonts/red-hat-text-600.woff2") format("woff2");
+}
+@font-face {
+  font-display: swap;
+  font-family: "Red Hat Text";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../assets/fonts/red-hat-text-700.woff2") format("woff2");
+}
+:root {
+  --color-rose-50: hsl(20, 50%, 98%);
+  --color-rose-100: hsl(13, 31%, 94%);
+  --color-rose-300: hsl(14, 25%, 72%);
+  --color-rose-400: hsl(7, 20%, 60%);
+  --color-rose-500: hsl(12, 20%, 44%);
+  --color-rose-900: hsl(14, 65%, 9%);
+  --color-red: hsl(14, 86%, 42%);
+  --mobile: 375px;
+  --tablet: 768px;
+  --desktop: 1440px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Red Hat Text", sans-serif;
+  background-color: var(--color-rose-50);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  clip-path: inset(100%) !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+.no-scroll {
+  overflow: hidden !important;
+  position: fixed; /* Для iOS */
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  max-width: 76rem;
+  width: 100%;
+  margin: 5.5rem auto;
+  gap: 2rem;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+}
+.products__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-rose-900);
+  margin-bottom: 2rem;
+}
+.products__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem 1.5rem;
+}
+.products__card-image {
+  position: relative;
+  padding-bottom: 1.375rem;
+  margin-bottom: 1rem;
+}
+.products__card-image img {
+  width: 15.625rem;
+  height: auto;
+  border-radius: 0.5rem;
+}
+.products__card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-wrap: nowrap;
+  border-radius: 62.4375rem;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+.products__card-category {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-rose-500);
+}
+.products__card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-rose-900);
+}
+.products__card-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-red);
+}
+
+.add-product-button {
+  color: var(--color-rose-900);
+  background-color: white;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--color-rose-400);
+  gap: 0.5rem;
+}
+.add-product-button::before {
+  content: "";
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-image: url("/assets/icons/icon-add-to-cart.svg");
+  background-repeat: no-repeat;
+}
+.add-product-button:hover {
+  color: var(--color-red);
+  border-color: var(--color-red);
+}
+
+.count-products-button {
+  gap: 2.84375rem;
+  background-color: var(--color-red);
+  padding: 0.75rem;
+  border: 1px solid var(--color-red);
+}
+.count-products-button span {
+  color: white;
+  font-weight: 600;
+}
+
+.count-products-button.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  color: white;
+}
+.count-products-button.btn:active {
+  background-color: white;
+  color: var(--color-red);
+}
+
+.attribution {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.5625rem;
+}
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 12px;
+}
+.cart__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-red);
+  margin-bottom: 1.5rem;
+}
+.cart__empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1rem;
+}
+.cart__empty-message p {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-rose-500);
+  text-align: center;
+}
+.cart__empty-image {
+  width: 8rem;
+  height: 8rem;
+}
+.cart__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-rose-100);
+}
+.cart__item:not(:first-child) {
+  padding-top: 1rem;
+}
+.cart__item-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.cart__item-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-rose-900);
+}
+.cart__item-count-and-price-wrap {
+  display: flex;
+  gap: 0.5rem;
+}
+.cart__item-count {
+  width: 1.3125rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-red);
+}
+.cart__item-price {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-rose-500);
+}
+.cart__item-total-price {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-rose-500);
+}
+.cart__item-delete-button {
+  width: 1.09375rem;
+  height: 1.09375rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-rose-400);
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px solid var(--color-rose-400);
+}
+.cart__item-delete-button:hover {
+  border-color: var(--color-rose-900);
+  color: var(--color-rose-900);
+}
+.cart__total-prace {
+  margin-block: 1.5rem;
+}
+.cart__banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 1rem;
+  background-color: var(--color-rose-50);
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.cart__banner:before {
+  content: "";
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-image: url("/assets/icons/icon-carbon-neutral.svg");
+  background-repeat: no-repeat;
+}
+.cart__banner-title {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-rose-900);
+}
+.cart__banner-title > span {
+  font-weight: 700;
+}
+
+.total-prace {
+  display: flex;
+  justify-content: space-between;
+}
+.total-prace__title {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-rose-900);
+}
+.total-prace__price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-rose-900);
+}
+
+.order-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: var(--color-red);
+  color: white;
+  border-radius: 62.4375rem;
+  padding-block: 1rem;
+}
+.order-button:hover {
+  background-color: color-mix(in srgb, var(--color-red) 75%, #000 25%);
+}
+
+.popup {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.popup__wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  width: 37rem;
+  padding: 2.5rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  gap: 2rem;
+}
+.popup__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.popup__title {
+  font-size: 2.5rem;
+  line-height: 120%;
+  font-weight: 700;
+  color: var(--color-rose-900);
+  margin-bottom: 0.5rem;
+}
+.popup__title:before {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  background-image: url("/assets/icons/icon-order-confirmed.svg");
+  background-repeat: no-repeat;
+  margin-bottom: 1.5rem;
+}
+.popup__subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-rose-500);
+}
+.popup-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.popup__order-info {
+  background-color: var(--color-rose-50);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+.popup__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-rose-100);
+}
+.popup__item:not(:first-child) {
+  padding-top: 1rem;
+}
+.popup__item-image {
+  width: 3rem;
+  height: 3rem;
+  margin-right: 1rem;
+}
+.popup__item-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+.popup__item-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-rose-900);
+}
+.popup__item-count-and-price-wrap {
+  display: flex;
+  gap: 0.5rem;
+}
+.popup__item-count {
+  width: 1.3125rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-red);
+}
+.popup__item-price {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-rose-500);
+}
+.popup__item-total-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-rose-900);
+}
+.popup__total-prace {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 1250px) {
+  .container {
+    width: 49.875rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cart {
+    width: 100%;
+  }
+}
+@media (max-width: 850px) {
+  .container {
+    width: 42.9375rem;
+    margin-inline: 2.5rem;
+  }
+  .products__card-image img {
+    width: 13.3125rem;
+    height: auto;
+  }
+  .popup__wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: calc(100% - 2 * 2.5rem);
+    margin: 0;
+  }
+}
+@media (max-width: 720px) {
+  .container {
+    width: 28.125rem;
+  }
+  .products__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .popup__wrapper {
+    width: 28.125rem;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    width: 20.4375rem;
+    margin: 1.5rem auto;
+  }
+  .products__list {
+    grid-template-columns: 1fr;
+  }
+  .products__card-image img {
+    width: 20.4375rem;
+    height: auto;
+  }
+  .attribution {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9375rem;
+  }
+  .popup__wrapper {
+    width: 100%;
+    max-width: 100vw;
+    padding: 2.5rem 1.5rem;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    translate: none;
+    transform: none;
+    border-radius: 0.75rem 0.75rem 0 0;
+    margin: 0;
+    height: auto;
+    max-height: 90vh;
+  }
+  .popup__order-info {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
+  }
+}
+@media (max-width: 335px) {
+  .container {
+    width: 19.375rem;
+  }
+  .popup__wrapper {
+    padding: 2.5rem 1rem;
+  }
+  .popup__order-info {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */
