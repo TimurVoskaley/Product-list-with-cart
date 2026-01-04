@@ -33,6 +33,8 @@
 
     &-image {
       position: relative;
+      padding-bottom: rem(22);
+      margin-bottom: rem(16);
 
       img {
         width: rem(250);
@@ -40,6 +42,8 @@
         border-radius: rem(8);
       }
     }
+
+
 
     &-button {
       display: flex;
