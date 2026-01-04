@@ -105,7 +105,10 @@
 }
 
 .count-products-button {
-  gap: rem(45.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: rem(160);
   background-color: var(--color-red);
   padding: rem(12);
   border: 1px solid var(--color-red);
