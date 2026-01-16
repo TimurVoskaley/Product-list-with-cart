@@ -51,7 +51,6 @@ function renderProducts(product) {
 
 
   const addButton = card.querySelector('.add-product-button');
-  addButton.dataset.productName = product.name;
   const plusButton = card.querySelector('.plus-product-button');
   const minusButton = card.querySelector('.minus-product-button');
 
@@ -138,7 +137,6 @@ function handleQuantityChange(product, change) {
       if (item.name === product.name) {
         if (change === 1) {
           item.count += 1;
-          updateProductCardUI(product, true);
         } else {
           item.count -= 1;
           if (item.count < 1) {
@@ -154,18 +152,15 @@ renderCart();
 }
 
 function updateProductCardCount(product) {
-  document.querySelectorAll('.products__card').forEach(card => {
-    const addButton = card.querySelector('.add-product-button');
 
-    if (addButton?.dataset.productName === product.name) {
-      const countBtn = card.querySelector('.product-quantity');
-      const cartItem = cart.find(item => item.name === product.name);
+  const card = document.querySelector(`.products__card[data-id="${product.name}"]`);
 
-      if (countBtn && cartItem) {
-        countBtn.textContent = cartItem.count;
-      }
-    }
-  });
+  const countBtn = card.querySelector('.product-quantity');
+  const cartItem = cart.find(item => item.name === product.name);
+
+  if (cartItem) {
+    countBtn.textContent = cartItem.count;
+  }
 }
 
 function deleteProductFromCart(product) {
@@ -181,22 +176,11 @@ function updateProductCardUI(product, isInCart) {
 
   const addButton = card.querySelector('.add-product-button');
   const countButton = card.querySelector('.count-products-button');
-  const quantitySpan = card.querySelector('.product-quantity');
 
   if (isInCart) {
-    // Находим товар в корзине для получения актуального количества
-    const cartItem = cart.find(item => item.name === product.name);
-    if (cartItem) {
-      quantitySpan.textContent = cartItem.count;
-    }
-
     addButton.style.display = 'none';
     countButton.style.display = 'flex';
   } else {
-    // Сбрасываем количество в спане при удалении из корзины
-    if (quantitySpan) {
-      quantitySpan.textContent = '1';
-    }
     addButton.style.display = 'flex';
     countButton.style.display = 'none';
   }
