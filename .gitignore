@@ -15,5 +15,4 @@
 .DS_Store
 .prettierignore
 .idea
-design
-style-guide.md
+node_modules

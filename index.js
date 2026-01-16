@@ -38,7 +38,7 @@ function renderProducts(product) {
       <button class="products__card-button add-product-button" type="button">Add to Cart</button>
       <div class="products__card-button count-products-button">
         <button class="count-products-button btn minus-product-button" type="button">-</button>
-        <span class="product-quantity">1</span>
+        <span class="product-quantity"></span>
         <button class="count-products-button btn plus-product-button" type="button">+</button>
       </div>
     </div>
@@ -126,10 +126,12 @@ function handleAddToCart(product) {
 
   // скрытие кнопки добавления товара в карточке
   updateProductCardUI(product, true);
+  updateProductCardCount(product)
   renderCart()
 }
 
 function handleQuantityChange(product, change) {
+
 
   // Здесь логика изменения количества
     for (let [index, item] of cart.entries()) {
@@ -147,7 +149,23 @@ function handleQuantityChange(product, change) {
       }
     }
   }
+  updateProductCardCount(product)
 renderCart();
+}
+
+function updateProductCardCount(product) {
+  document.querySelectorAll('.products__card').forEach(card => {
+    const addButton = card.querySelector('.add-product-button');
+
+    if (addButton?.dataset.productName === product.name) {
+      const countBtn = card.querySelector('.product-quantity');
+      const cartItem = cart.find(item => item.name === product.name);
+
+      if (countBtn && cartItem) {
+        countBtn.textContent = cartItem.count;
+      }
+    }
+  });
 }
 
 function deleteProductFromCart(product) {
