@@ -36,7 +36,7 @@ function renderProducts(product) {
         <img src="${product.image.desktop}" alt="${product.name}" width="251" height="240">
       </picture>
       <button class="products__card-button add-product-button" type="button">Add to Cart</button>
-      <div class="products__card-button count-products-button visually-hidden">
+      <div class="products__card-button count-products-button">
         <button class="count-products-button btn minus-product-button" type="button">-</button>
         <span class="product-quantity"></span>
         <button class="count-products-button btn plus-product-button" type="button">+</button>
@@ -75,16 +75,16 @@ function renderCart() {
 
 
   if (cart.length === 0) {
-    emptyMessage.classList.remove('visually-hidden');
-    cartContent.classList.add('visually-hidden');
+    emptyMessage.style.display = 'flex';
+    cartContent.style.display = 'none';
     emptyMessage.className = 'cart__empty-message';
     emptyMessage.innerHTML = `<img class="cart__empty-image" src="./assets/images/illustration-empty-cart.svg" alt="" aria-hidden="true">
                               <p>Your added items will appear here</p>`;
     cartElement.append(emptyMessage);
 
   } else {
-    emptyMessage.classList.add('visually-hidden');
-    cartContent.classList.remove('visually-hidden');
+    emptyMessage.style.display = 'none';
+    cartContent.style.display = 'block';
     cartList.innerHTML = '';
 
     //создание в корзине элемента списка выбранного товара
@@ -138,6 +138,7 @@ function handleQuantityChange(product, change) {
       if (item.name === product.name) {
         if (change === 1) {
           item.count += 1;
+          updateProductCardUI(product, true);
         } else {
           item.count -= 1;
           if (item.count < 1) {
@@ -175,29 +176,30 @@ function deleteProductFromCart(product) {
 }
 
 function updateProductCardUI(product, isInCart) {
-  // Находим все карточки с этим товаром (может быть несколько)
-  document.querySelectorAll('.products__card').forEach(card => {
-    const addButton = card.querySelector('.add-product-button');
-    const image = card.querySelector('img');
-    const countButton = card.querySelector('.count-products-button');
+  const card = document.querySelector(`.products__card[data-id="${product.name}"]`);
+  if (!card) return;
 
-    // Проверяем, совпадает ли имя товара через data-атрибут
-    if (addButton?.dataset.productName === product.name) {
-      if (isInCart) {
-        image.style.border = '2px solid hsl(14, 86%, 42%)';
+  const addButton = card.querySelector('.add-product-button');
+  const countButton = card.querySelector('.count-products-button');
+  const quantitySpan = card.querySelector('.product-quantity');
 
-        console.log(image.className);
-        addButton.classList.add('visually-hidden');
-        countButton.classList.remove('visually-hidden');
-      } else {
-        image.style.border = 'none';
-        console.log(image.className);
-        addButton.classList.remove('visually-hidden');
-        countButton.classList.add('visually-hidden');
-      }
+  if (isInCart) {
+    // Находим товар в корзине для получения актуального количества
+    const cartItem = cart.find(item => item.name === product.name);
+    if (cartItem) {
+      quantitySpan.textContent = cartItem.count;
     }
-  });
 
+    addButton.style.display = 'none';
+    countButton.style.display = 'flex';
+  } else {
+    // Сбрасываем количество в спане при удалении из корзины
+    if (quantitySpan) {
+      quantitySpan.textContent = '1';
+    }
+    addButton.style.display = 'flex';
+    countButton.style.display = 'none';
+  }
 }
 
 function renderPopupOrderList() {
@@ -235,11 +237,13 @@ function renderPopupOrderList() {
 }
 
 function showAndHidePopup() {
-  popup.classList.toggle('visually-hidden');
-  document.body.classList.toggle('no-scroll');
-  if (!popup.classList.contains('visually-hidden')) {
-    renderPopupOrderList()
+  if (popup.style.display === 'none' || popup.style.display === '') {
+    popup.style.display = 'block';
+  } else {
+    popup.style.display = 'none';
   }
+  document.body.classList.toggle('no-scroll');
+  renderPopupOrderList()
 }
 
 popup.addEventListener('click', (event) => {

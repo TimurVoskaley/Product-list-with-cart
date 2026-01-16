@@ -1,6 +1,7 @@
 @use '../helpers' as *;
 
 .popup {
+  display: none;
   position: fixed;
   left: 0;
   top: 0;
